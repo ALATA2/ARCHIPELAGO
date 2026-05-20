@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARCHIPELAGO - Procedural Sandbox</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <!-- Canvas for WebGL Rendering -->
+  <canvas id="game-canvas"></canvas>
+
+  <!-- Crosshair for PointerLock -->
+  <div id="crosshair"></div>
+
+  <!-- HUD Overlay -->
+  <div id="hud">
+    <!-- Top-Left: Player Stats -->
+    <div class="stats-card">
+      <div class="stat-row">
+        <span class="stat-label">VITA</span>
+        <div class="bar-container">
+          <div id="health-bar" class="bar health" style="width: 100%;"></div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">ENERGIA</span>
+        <div class="bar-container">
+          <div id="energy-bar" class="bar energy" style="width: 100%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top-Right: World Info -->
+    <div class="info-card">
+      <div class="info-item">
+        <span class="info-label">PROFONDITÀ:</span>
+        <span id="depth-value" class="info-val">0 m</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">STRATO:</span>
+        <span id="layer-value" class="info-val">Superficie</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">TEMP:</span>
+        <span id="temp-value" class="info-val">24 °C</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">CHUNKS:</span>
+        <span id="chunks-value" class="info-val">0</span>
+      </div>
+    </div>
+
+    <!-- Center-Bottom: Inventory Hotbar -->
+    <div class="hotbar-container">
+      <div class="hotbar">
+        <!-- 9 Slots -->
+        <div class="slot active" data-slot="0">
+          <div class="item-icon pickaxe">⛏️</div>
+          <span class="slot-key">1</span>
+        </div>
+        <div class="slot" data-slot="1">
+          <div class="item-icon">🪵</div>
+          <span class="slot-key">2</span>
+        </div>
+        <div class="slot" data-slot="2">
+          <div class="item-icon">🪨</div>
+          <span class="slot-key">3</span>
+        </div>
+        <div class="slot" data-slot="3">
+          <span class="slot-key">4</span>
+        </div>
+        <div class="slot" data-slot="4">
+          <span class="slot-key">5</span>
+        </div>
+        <div class="slot" data-slot="5">
+          <span class="slot-key">6</span>
+        </div>
+        <div class="slot" data-slot="6">
+          <span class="slot-key">7</span>
+        </div>
+        <div class="slot" data-slot="7">
+          <span class="slot-key">8</span>
+        </div>
+        <div class="slot" data-slot="8">
+          <span class="slot-key">9</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Instruction / Pause Screen Overlay -->
+  <div id="blocker">
+    <!-- Main Start Menu / Instructions -->
+    <div id="instructions">
+      <h1 class="game-title">ARCHIPELAGO</h1>
+      <p class="subtitle">Procedural Voxel Sandbox Game</p>
+      
+      <div class="controls-guide">
+        <div class="control-key">W, A, S, D</div>
+        <div class="control-desc">Muoviti</div>
+        <div class="control-key">Mouse</div>
+        <div class="control-desc">Guarda in giro</div>
+        <div class="control-key">Click Sinistro</div>
+        <div class="control-desc">Scava (Attiva nello Step 2)</div>
+        <div class="control-key">Rottella/1-9</div>
+        <div class="control-desc">Seleziona Hotbar</div>
+        <div class="control-key">Spazio</div>
+        <div class="control-desc">Salta / Sali</div>
+      </div>
+
+      <button id="play-button">GIOCA</button>
+      
+      <div class="footer-note">
+        Step 1: Core Procedurale & Marching Cubes
+      </div>
+    </div>
+
+    <!-- Confirm Exit Screen -->
+    <div id="confirm-exit" style="display: none;">
+      <h1 class="game-title">VUOI USCIRE?</h1>
+      <p class="subtitle">Sei sicuro di voler interrompere la partita?</p>
+      
+      <div class="confirm-buttons">
+        <button id="resume-button" class="btn-green">NO, CONTINUA</button>
+        <button id="quit-button" class="btn-red">SÌ, ESCI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entry Script -->
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
