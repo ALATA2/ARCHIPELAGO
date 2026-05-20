@@ -243,7 +243,8 @@ export class Game {
       this.world.update(playerPos);
 
       // Follow lighting: adjust Sun light position relative to player to cast shadows near viewport
-      this.dirLight.position.set(playerPos.x + 80, playerPos.y + 120, playerPos.z + 40);
+      // Placing sun almost perpendicular (straight down) temporarily for better workflow visibility
+      this.dirLight.position.set(playerPos.x + 5, playerPos.y + 250, playerPos.z + 5);
       this.dirLight.target = this.controls.getObject();
 
       // Idle breathing micro-animation on the hand
