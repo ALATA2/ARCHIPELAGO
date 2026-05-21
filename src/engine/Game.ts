@@ -122,7 +122,8 @@ export class Game {
       opacity: 0.6,
       roughness: 0.15,
       metalness: 0.1,
-      flatShading: true
+      flatShading: true,
+      side: THREE.DoubleSide // Visible from below when swimming underwater!
     });
 
     this.waterPlane = new THREE.Mesh(waterGeo, waterMat);
@@ -256,6 +257,9 @@ export class Game {
       this.updateHUD(playerPos);
     }
 
+    // Dynamic underwater visual effects transition
+    this.updateUnderwaterEffect();
+
     // Render viewport scene
     this.renderer.render(this.scene, this.camera);
   }
@@ -318,5 +322,31 @@ export class Game {
     this.controls.getObject().clear();
     this.scene.clear();
     this.renderer.dispose();
+  }
+
+  /**
+   * Evaluates if the camera is below the ocean surface and applies realistic underwater fog/color transitions.
+   */
+  private updateUnderwaterEffect(): void {
+    const cameraWorldPos = new THREE.Vector3();
+    this.camera.getWorldPosition(cameraWorldPos);
+
+    // Water level is at Y = -0.5
+    const isUnderwater = cameraWorldPos.y < -0.5;
+    const fog = this.scene.fog;
+
+    if (fog && 'density' in fog) {
+      if (isUnderwater) {
+        // Deep turquoise pastel blue for Caribbean deep water, slightly darker and highly blurred
+        (this.scene.background as THREE.Color).setHex(0x0a5870);
+        (fog as THREE.FogExp2).color.setHex(0x0a5870);
+        (fog as THREE.FogExp2).density = 0.15; // Thick fog to simulate muddy/scattering depth blur
+      } else {
+        // Clear sky blue and light mist above surface
+        (this.scene.background as THREE.Color).setHex(0xbfe3f4);
+        (fog as THREE.FogExp2).color.setHex(0xbfe3f4);
+        (fog as THREE.FogExp2).density = 0.012;
+      }
+    }
   }
 }
